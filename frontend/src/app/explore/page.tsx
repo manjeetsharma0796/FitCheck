@@ -32,6 +32,8 @@ const ExplorePage = () => {
     const connectWallet = async () => {
         if (typeof window.ethereum !== 'undefined') {
             try {
+
+
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 setWalletAddress(accounts[0]);
                 setWalletConnected(true);
@@ -79,6 +81,12 @@ const ExplorePage = () => {
 
     const deposit = async ()=> {
         const {abi} = contractAbi;
+        if (typeof window.ethereum === 'undefined') {
+            console.error('MetaMask is not installed or Ethereum provider is unavailable.');
+            return;
+        }
+    
+
         const provider = new BrowserProvider(window.ethereum);
         console.log(bookingTrainer, "===============")
         const signer = await provider.getSigner();
@@ -88,8 +96,14 @@ const ExplorePage = () => {
         await (await bounceContract.donate(address,"0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
       
       }
-      const withdraw = async (amount)=> {
+      const withdraw = async (amount:any)=> {
         const {abi} = contractAbi;
+        if (typeof window.ethereum === 'undefined') {
+            console.error('MetaMask is not installed or Ethereum provider is unavailable.');
+            return;
+        }
+    
+
         const provider = new BrowserProvider(window.ethereum);
     
         const signer = await provider.getSigner();
