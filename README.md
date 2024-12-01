@@ -1,6 +1,6 @@
-# About FitCheck (build on EDU chain)
+# About FitCheck (build on OPEN CAMPUS EDUCHAIN TESTNET )
 
-- Verify this Contract -> [Verify FIT](https://sepolia.lineascan.build/address/0xec0d386a5820714ef0dc2b21e92eb65c63ef221f)
+- Verify this Contract -> [Verify FIT](https://edu-chain-testnet.blockscout.com/token/0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f)
 
 # FitCheck 
 
@@ -46,9 +46,9 @@ npm start
 ```
 Add this FIT token as manually into your wallet on EDU Chain
 
-Contract Address = 0xEc0D386A5820714Ef0DC2B21E92eB65C63eF221f
+Contract Address = 0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f
 
-Verify this Contract -> [Verify FIT](https://sepolia.lineascan.build/address/0xec0d386a5820714ef0dc2b21e92eb65c63ef221f)
+Verify this Contract -> [Verify FIT](https://edu-chain-testnet.blockscout.com/token/0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f)
 
 ---
 

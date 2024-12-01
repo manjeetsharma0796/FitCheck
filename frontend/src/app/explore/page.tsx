@@ -85,7 +85,7 @@ const ExplorePage = () => {
         const address = await signer.getAddress();
         const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
     
-        await (await bounceContract.donate(address,"0xEc0D386A5820714Ef0DC2B21E92eB65C63eF221f", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
+        await (await bounceContract.donate(address,"0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
       
       }
       const withdraw = async (amount)=> {
