@@ -26,7 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const opts = {
-    redirectUri: 'https://fit-check-xi.vercel.app/explore/redirect', // Adjust this URL
+    redirectUri: 'https://fit-check-xi.vercel.app/redirect', // Adjust this URL
     referralCode: 'PARTNER6', // Assign partner code
   };
   return (
