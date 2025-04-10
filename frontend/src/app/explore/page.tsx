@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { BrowserProvider, ethers } from 'ethers';
 import contractAddress from "../contractInfo/contractAddress.json"
 import contractAbi from "../contractInfo/contractAbi.json"
+import LoginButton from '@/app/components/LoginButton';
+import { useOCAuth } from '@opencampus/ocid-connect-js';
 
 declare global {
     interface Window {
@@ -28,6 +30,24 @@ const ExplorePage = () => {
     const [walletAddress, setWalletAddress] = useState('');
     const [walletConnected, setWalletConnected] = useState(false);
 
+    const { authState, ocAuth } = useOCAuth() as {
+        authState: { isLoading: boolean; isAuthenticated: boolean; error?: { message: string } };
+        ocAuth: { getAuthState: () => { OCId: string } };
+    };
+
+
+
+    if (!authState) {
+        return <div>Loading authentication...</div>;
+    }
+
+    if (authState.error) {
+        return <div>Error: {authState.error.message}</div>;
+    }
+
+    if (authState.isLoading) {
+        return <div>Loading...</div>;
+    }
 
     const connectWallet = async () => {
         if (typeof window.ethereum !== 'undefined') {
@@ -79,40 +99,40 @@ const ExplorePage = () => {
         }
     };
 
-    const deposit = async ()=> {
-        const {abi} = contractAbi;
+    const deposit = async () => {
+        const { abi } = contractAbi;
         if (typeof window.ethereum === 'undefined') {
             console.error('MetaMask is not installed or Ethereum provider is unavailable.');
             return;
         }
-    
+
 
         const provider = new BrowserProvider(window.ethereum);
         console.log(bookingTrainer, "===============")
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
         const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
-    
-        await (await bounceContract.donate(address,"0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
-      
-      }
-      const withdraw = async (amount:any)=> {
-        const {abi} = contractAbi;
+
+        await (await bounceContract.donate(address, "0xABf9f00BeEb5ee7edc10F5a698F84AE380cEb51f", ethers.parseUnits(bookingTrainer.coins.toString(), 18))).wait();
+
+    }
+    const withdraw = async (amount: any) => {
+        const { abi } = contractAbi;
         if (typeof window.ethereum === 'undefined') {
             console.error('MetaMask is not installed or Ethereum provider is unavailable.');
             return;
         }
-    
+
 
         const provider = new BrowserProvider(window.ethereum);
-    
+
         const signer = await provider.getSigner();
         const address = await signer.getAddress();
         const bounceContract = new ethers.Contract(contractAddress.address, abi, signer)
-    
+
         await (await bounceContract.mint(address, ethers.parseUnits(amount.toString(), 18))).wait();
-      
-      }
+
+    }
 
     const trainers = [
         {
@@ -174,12 +194,12 @@ const ExplorePage = () => {
                     <nav className="flex items-center justify-between h-16">
                         <div className="flex items-center space-x-12">
                             <Link href="/">
-                            <motion.div
-                                whileHover={{ scale: 1.1 }}
-                                className="text-white text-3xl font-extrabold tracking-wide"
-                            >
-                                FitCheck
-                            </motion.div>
+                                <motion.div
+                                    whileHover={{ scale: 1.1 }}
+                                    className="text-white text-3xl font-extrabold tracking-wide"
+                                >
+                                    FitCheck
+                                </motion.div>
                             </Link>
                         </div>
                         <div className="flex items-center space-x-4">
@@ -196,9 +216,16 @@ const ExplorePage = () => {
                                     whileHover={{ scale: 1.05 }}
                                     className="bg-white text-black px-6 py-2 rounded-full font-semibold shadow-md hover:shadow-lg transition duration-200 ease-in-out"
                                 >
-                                    <span >{walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4)}</span>
+                                    <span>{walletAddress.slice(0, 5) + '...' + walletAddress.slice(-4)}</span>
                                 </motion.button>
                             )}
+                            <div className="border border-white/20 px-4 py-2 rounded-lg text-white">
+                                {authState.isAuthenticated ? (
+                                    <p>{JSON.stringify(ocAuth.getAuthState().OCId)} 🎉</p>
+                                ) : (
+                                    <LoginButton />
+                                )}
+                            </div>
                         </div>
                     </nav>
                 </div>
